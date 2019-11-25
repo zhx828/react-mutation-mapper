@@ -30,6 +30,8 @@ export type Query = {
 export type IndicatorQueryResp = {
     highestSensitiveLevel: LevelOfEvidenceType;
     highestResistanceLevel: LevelOfEvidenceType;
+    highestDiagnosticImplicationLevel: LevelOfEvidenceType;
+    highestPrognosticImplicationLevel: LevelOfEvidenceType;
     vus: boolean;
     geneExist: boolean;
     geneSummary: string;

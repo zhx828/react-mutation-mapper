@@ -11,7 +11,7 @@ import {
     annotationIconClassNames,
     calcOncogenicScore,
     calcResistanceLevelScore,
-    calcSensitivityLevelScore,
+    calcSensitivityLevelScore, dxPxIconClassNames,
 } from "../../util/OncoKbUtils";
 import {errorIcon, loaderIcon} from "../StatusHelpers";
 import OncoKbTooltip from "./OncoKbTooltip";
@@ -23,6 +23,7 @@ import 'oncokb-styles/dist/oncokb.css';
 
 export interface IOncoKbProps {
     status: "pending" | "error" | "complete";
+    levelType: 'tx' | 'dx' | 'px'
     indicator?: IndicatorQueryResp;
     evidenceCache?: SimpleCache;
     evidenceQuery?: Query;
@@ -84,15 +85,38 @@ export default class OncoKB extends React.Component<IOncoKbProps, {}>
         }
         else
         {
-            oncoKbContent = (
-                <span className={`${annotationStyles["annotation-item"]}`}>
+            if(this.props.levelType ==='tx') {
+                oncoKbContent = (
+                    <span className={`${annotationStyles["annotation-item"]}`}>
                     <i
                         className={annotationIconClassNames(this.props.indicator)}
                         data-test='oncogenic-icon-image'
                         data-test2={this.props.hugoGeneSymbol}
                     />
                 </span>
-            );
+                );
+            }
+            if(this.props.levelType ==='dx') {
+                oncoKbContent = (
+                    <span className={`${annotationStyles["annotation-item"]}`}>
+                    <i
+                        style={{marginTop: 6}}
+                        className={dxPxIconClassNames('dx', this.props.indicator)}
+                    />
+                </span>
+                );
+            }
+            if(this.props.levelType ==='px') {
+                oncoKbContent = (
+                    <span className={`${annotationStyles["annotation-item"]}`}>
+                    <i
+                        style={{marginTop: 6, marginLeft: 6}}
+                        className={dxPxIconClassNames('px', this.props.indicator)}
+                    />
+                </span>
+                );
+            }
+
             if (!this.props.disableFeedback && this.showFeedback)
             {
                 oncoKbContent = (
@@ -125,7 +149,11 @@ export default class OncoKB extends React.Component<IOncoKbProps, {}>
             }
         }
 
-        return oncoKbContent;
+        return (
+            <span key={this.props.levelType}>
+                {oncoKbContent}
+            </span>
+        );
     }
 
     @autobind

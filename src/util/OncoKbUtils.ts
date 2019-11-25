@@ -55,7 +55,7 @@ export function normalizeLevel(level:string|null):string|null
 {
     if (level)
     {
-        const matchArray = level.match(/LEVEL_(R?\d[AB]?)/);
+        const matchArray = level.match(/LEVEL_(([DP]x)?R?\d[AB]?)/);
 
         if (matchArray && matchArray.length >= 2) {
             return matchArray[1];
@@ -134,6 +134,20 @@ export function annotationIconClassNames(indicatorQueryResp: IndicatorQueryResp 
             }
 
             classNames[3] = levelName;
+        }
+    }
+
+    return classNames.join(" ");
+}
+
+export function dxPxIconClassNames(type: 'dx' | 'px', indicatorQueryResp: IndicatorQueryResp | undefined): string {
+    const classNames = ["oncokb", `${type}-icon`];
+
+    if (indicatorQueryResp) {
+        const level = normalizeLevel(type === 'dx' ? indicatorQueryResp.highestDiagnosticImplicationLevel : indicatorQueryResp.highestPrognosticImplicationLevel);
+
+        if (level) {
+            classNames.push(`level-${level}`);
         }
     }
 

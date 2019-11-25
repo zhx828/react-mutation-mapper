@@ -197,6 +197,7 @@ export default class Annotation extends React.Component<AnnotationProps, {}>
                 {
                     this.props.enableOncoKb &&
                     <OncoKB
+                        levelType={'tx'}
                         hugoGeneSymbol={annotation.hugoGeneSymbol}
                         geneNotExist={!annotation.oncoKbGeneExist}
                         isCancerGene={annotation.isOncoKbCancerGene}
